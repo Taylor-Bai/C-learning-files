@@ -25,8 +25,8 @@
 \
 \
 <font color=orange>头文件里放定义容易出现重定义问题！</font>
-头文件函数的声明：函数名，输出类型、输入类型（缺省值）
-变量的声明：变量名、变量类型
+头文件函数的声明：输出类型、函数名、输入类型（缺省值）
+变量的声明：变量类型、变量名、
 \
 \
 本地变量  成员变量  this指针
@@ -35,6 +35,9 @@
 default constructor无参数的构造函数
 
 new、new[]、delete、delete[]分配空间、调用构造，输入输出、区别
+new出来的空间在哪里？
+
+析构==空间回收？
 ***
 初始化列表早于构造函数执行,在输入为对象时有区别，会调用默认的输入对象的构造函数
     
@@ -61,6 +64,7 @@ const指针、const变量、const函数如何表示、什么意思？
 在头文件中函数后有const什么意思？
 const和非const可以构成重载（输入指针不一样）
 **const类型必须在初始化时赋值！！**
+const类型变量能不能做左值？
 
     #include <iostream>
     using namespace std;
@@ -177,3 +181,87 @@ C++中的内存分区：
         b.print();
         return 0;
     }
+***
+**运算符重载**
+
+作用于**对象**
+哪些运算符不可以重载？4个
+全局运算符重载、成员函数的运算符重载
+`const String operation + (const String& r, const String& l)`
+`const String String::operator + (const String& that)` 隐藏的变量this
+\
+\
+Receiver、Type conversion? 哪些时候需要进行类型转换？
+`z = x + y`
+`z = x + 3`
+`z = 3 + x`
+
+C++中的自动类型转换有哪些？？？
+
+重载中的三种const分别有什么意义？
+根据不同的运算符使用相应的const
+
+运算符函数的原型：小于、等于
+
+    bool Integer::operator==( const Integer& rhs ) const {
+        return i == rhs.i;
+    }
+    bool Integer::operator<( const Integer& rhs ) const {
+        return i < rhs.i;
+    }
+
+\
+**模板**
+模板规则很严格，不考虑implicit conversion
+模板类、类模板、模板函数、函数模板
+模板函数的重载问题
+
+函数模板的声明：
+
+
+    Template<class T，......>
+    void swap(T& a,T& b){
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+模板类函数的使用：
+`int a; int b; foo(a,b);`
+`foo<int>(a,b);`
+
+
+**异常抛出**
+throw沿着调用顺序，不断将问题抛出，直到有catch抓住
+
+    template <class T>
+    T& Vector<T>::operator[](int indx){
+        if (indx < 0 l indx >= m size) {
+            // VectorIndexError e(indx);
+            // throw e;
+            throw VectorIndexError(indx);     // 抛出异常的那个index
+        }
+        return m elements[indx];
+    }
+
+    int func() {
+        Vector<int> v(12);
+        v[3]=5;
+        int i = v[42]; // 越界了
+        return i * 5;
+    }
+    void outer() {
+        try {
+            func(); func2();
+        } catch (VectorIndexError& e) {
+            e.diagnostic();                 // 处理异常
+            throw；                         // 用于层层抛出异常
+        }
+        cout << "Control is here after exception";
+        catch(...){
+            cout << "catch All exceptions";     // 捕捉所有异常
+        }
+    }
+     
+
+
