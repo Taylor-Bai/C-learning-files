@@ -15,3 +15,18 @@ while循环更合适事先不知道循环总次数的场景，以<font color=ora
     先初始化1，再234循环
 
 
+
+哈希表的滑动窗口
+哈希表：
+
+    // 常用函数
+    unordered_map <int, int> cnt;
+    cnt.size();                     // 得到键值对数量
+    cnt[key] = value;               // 赋值
+    unordered_map<int, int>::iterator iter = cnt.begin();   // 得到指向哈希表头位置的指针
+    unordered_map<int, int>::iterator iter = cnt.end();    // 得到指向哈希表尾位置的指针
+    cnt.erase(iter_begin);          // 删除键值
+    cnt.at(3);                      // 通过key查询value
+    iter = cnt.find(2);             // 通过key查询位置
+    iter->first;                    // 通过索引查询key
+    iter->second;                   // 通过索引查询value

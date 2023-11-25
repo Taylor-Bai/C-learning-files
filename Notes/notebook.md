@@ -65,6 +65,14 @@ const指针、const变量、const函数如何表示、什么意思？
 const和非const可以构成重载（输入指针不一样）
 **const类型必须在初始化时赋值！！**
 const类型变量能不能做左值？
+以下几种指针的区别：
+`const int *p = 8;`
+`int* const p = &a;`
+`const int * const  p = &a;`
+
+补充内容：
+左值(locator value，lvalue)：存储在内存中、有明确存储地址（可寻址）的数据
+右值(read value，rvalue)：提供数据值的数据（不一定可以寻址，例如存储于寄存器中的数据）eg:函数返回值、临时计算值
 
     #include <iostream>
     using namespace std;
@@ -89,39 +97,46 @@ const类型变量能不能做左值？
 本质使用const指针实现的。为了减少*号。引用也会分配存储空间，用于保存被引用变量的地址,引用的地址==被引变量的地址
 向上构型
 
+    Manager是Employee的子类，可以被当作employee看待
     Manager pete("Pete"，"444-55-6666""Bakery")
     Employee* ep = &pete; // Upcast
     Employee& er = pete; // Upcast
 
-C++中默认静态绑定，但virtual用于进行函数的动态绑定（Overiding）
+C++中默认静态绑定，但virtual用于进行函数的动态绑定（改写/覆盖Overiding）
 virtual实现动态绑定的定义：指针及引用、原理：vptr指针、vtable；有virtual的对象内存如何？
 Overloading和Overriding同时存在的情况？
 **&取地址**
 **对象的地址就是对象第一个字段的地址**
 
     A a,b;
+    A* p = &a;
     int* p = (int*)&a;      //vptr
     int* q = (int*)&b;
     那么*p == *q？
 
 
     //不同赋值的区别
-    Shape a;                //子类
-    Ellipse b;              //父类
-        a = b;                //downcast
+    Shape a;                //父类
+    Ellipse b;              //子类
+        a = b;                
         a.render();         //调用的是父类还是子类的render函数？
     
         Shape* a = &b;
-        a->render();         //调用的是父类还是子类的函数？点调用与指针调用有区别吗？
+        a->render();         //调用的是父类还是子类的函数？点调用与指针调用有区别吗？       
 
         int* p = (int*)a;
         int* q = (int*)b;
         *p = *q;
-        a.render();//调用的是父类还是子类的函数？
+        a.render();         //调用的是父类还是子类的函数？
         p = q;
-        a.render();//调用的是父类还是子类的函数？ 
-
+        a.render();         //调用的是父类还是子类的函数？ 
 ![Alt text](image-2.png)
+补充内容：
+对象的**函数**和**静态变量**储存在公共代码区，通过this指针访问
+对象的**一般变量**储存在堆栈中，与对象共生死，所以对象大小基本就是变量大小之和。
+虚继承类产生的对象的内存中除了一般变量，还包含**vptr**
+
+
 ***
 地址的强制转换：（int*）
 整型变量、对象、字符变量、字符串变量指针大小为多少？
@@ -262,6 +277,14 @@ throw沿着调用顺序，不断将问题抛出，直到有catch抓住
             cout << "catch All exceptions";     // 捕捉所有异常
         }
     }
+
+***
+流：一维单方向
+
+STL库
+容器：Vector、Deque、List、Set、Map（key-value）
+算法：sort、search···
+迭代器（iterator）
      
 
 
