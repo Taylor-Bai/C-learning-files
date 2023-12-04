@@ -15,7 +15,7 @@ public:
     int getsum(int n){                  // 取出每个位置的数
         int sum = 0;
         while(n != 0){
-            sum+=(n % 10)*(n % 10);     // 最低位的平方和
+            sum += (n % 10)*(n % 10);     // 最低位的平方和
             n = n / 10;
         }
         return sum;
