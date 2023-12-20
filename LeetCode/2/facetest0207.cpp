@@ -45,6 +45,9 @@ void LinkList::Display() {
 }
 
 
+
+// 面试题 02.07. 链表相交
+// 思路：将两个链表对齐，后逐项验证是否相等
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {

@@ -38,7 +38,7 @@ public:
             while (lidx <= ridx && nums[ridx] == val){      // 去找右边不等于val的值，跳出时nums[ridx]!=val
                  ridx--;
             }
-            while(lidx <= ridx && nums[lidx] != val){       // 去找左边不等于val的值，跳出时num[lidx]==val
+            while(lidx <= ridx && nums[lidx] != val){       // 去找左边等于val的值，跳出时num[lidx]==val
                  lidx++;
             }
             if(lidx < ridx){
@@ -47,7 +47,7 @@ public:
                  lidx++;
             }
         }
-        return lidx;                // 输出lidx原因？
+        return lidx;                
     }
 };
 

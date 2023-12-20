@@ -16,6 +16,9 @@ using namespace std;
 
 
 // 这里最好重写reverse函数，自带的reverse函数反转的区间是左闭右开reverse(s.begin(),s.end());
+// 考虑到前后和词间有很多空格，所以需要一个去空格的函数
+// 
+// 反转函数主要部分，需要快指针去判断一个单词是否结束（后面是空格/已经到末尾）
 class Solution{
 public:
 
@@ -24,17 +27,19 @@ public:
             swap(s[a],s[b]);
         }
     }
-    void removeExtraSpaces(string& s) {                 //去除所有空格并在相邻单词之间添加空格, 快慢指针。
+
+    //去除所有空格并在相邻单词之间添加空格, 快慢指针。
+    void removeExtraSpaces(string& s) {                 
         int slow = 0;   
         for (int i = 0; i < s.size(); ++i) {    
-            if (s[i] != ' ') {                          // 遇到空格跳过。
-                if (slow != 0) s[slow++] = ' ';         // 遇到的第一个非空格即是第一个单词开头，手动控制空格，给单词之间添加空格。slow != 0说明不是第一个单词，需要在单词前添加空格。
-                while (i < s.size() && s[i] != ' ') {   // 补上该单词，遇到空格说明单词结束。
+            if (s[i] != ' ') {                          // 第一次检测到非空格
+                if (slow != 0) s[slow++] = ' ';         // 如果慢指针不是第一个单词的话，添加一个空格
+                while (i < s.size() && s[i] != ' ') {   // 非空格后面都是非空格，所以循环把数字填到慢指针中去
                     s[slow++] = s[i++];
                 }
             }
         }
-        s.resize(slow);                                 // slow的大小即为去除多余空格后的大小。
+        s.resize(slow);                                 // 因为是在本数组上消除空格，后面需要调整大小
     }
 
     string reverseWords(string s) {
@@ -42,9 +47,46 @@ public:
         reverse(s, 0, s.size() - 1);
         int start = 0; 
         for (int i = 0; i <= s.size(); ++i) {
-            if (i == s.size() || s[i] == ' ') { // 到达空格或者串尾，说明一个单词结束。进行翻转。
-                reverse(s, start, i - 1);       // 翻转，注意是左闭右闭 []的翻转。
-                start = i + 1;                  // 更新下一个单词的开始下标start
+            if (i == s.size() || s[i] == ' ') { // 去空格后的字符串，可以用空格来判断，而不是s[i] != ' ' && s[i] == ' '
+                reverse(s, start, i - 1);       
+                start = i + 1;                  
+            }
+        }
+        return s;
+    }
+};
+
+
+class Solution1{
+public:
+    void reverse(string& s, int a, int b){
+        for(int start = a, end = b; a < b; a++, b--){
+            swap(s[start], s[end]);
+        }
+    }
+
+    void removespaces(string& s){
+        int sp(0);
+        for(int fp(0); fp < s.size(); fp++){
+            if(s[fp] != ' '){
+                if(sp != 0){s[sp] = ' '; sp++;}
+                while(fp < s.size() && s[fp] != ' '){
+                    s[sp] = s[fp];
+                    sp++;fp++;
+                }
+            }
+        }
+        s.resize(sp); 
+    }
+
+    string reverseWords(string s) {
+        removespaces(s); 
+        reverse(s, 0, s.size() - 1);
+        int start = 0; 
+        for (int i = 0; i <= s.size(); ++i) {
+            if (i == s.size() || s[i] == ' ') { // 去空格后的字符串，可以用空格来判断，而不是s[i] != ' ' && s[i] == ' '
+                reverse(s, start, i - 1);       
+                start = i + 1;                  
             }
         }
         return s;
@@ -52,8 +94,8 @@ public:
 };
 
 int main(){
-    Solution a;
-    string b = "  hello world  ";
+    Solution1 a;
+    string b = "the sky is blue";
     string c ;
     c = a.reverseWords(b);
     cout << c;

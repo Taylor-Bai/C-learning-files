@@ -22,6 +22,7 @@ public:
     ListNode *detectCycle(ListNode *head) {
         ListNode* sp = head;
         ListNode* fp = head;
+        // 不知道是否是环形链表，还是按照直线型遍历
         while(fp != NULL  && fp->next != NULL){         // 注意这里的fp指针越出的条件，不能写作fp->next->next != NULL,当链表为奇数时，fp->next为空，无法调用->next
             sp = sp->next;
             fp = fp->next->next;
